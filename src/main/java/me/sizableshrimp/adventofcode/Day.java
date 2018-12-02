@@ -1,4 +1,4 @@
-package util;
+package me.sizableshrimp.adventofcode;
 
 import javafx.util.Pair;
 

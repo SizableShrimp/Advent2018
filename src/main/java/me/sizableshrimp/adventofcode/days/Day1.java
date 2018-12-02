@@ -1,6 +1,6 @@
-package days;
+package me.sizableshrimp.adventofcode.days;
 
-import util.Day;
+import me.sizableshrimp.adventofcode.Day;
 
 import java.util.ArrayList;
 import java.util.HashSet;

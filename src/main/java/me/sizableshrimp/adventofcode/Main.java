@@ -1,4 +1,6 @@
-import days.Day2;
+package me.sizableshrimp.adventofcode;
+
+import me.sizableshrimp.adventofcode.days.Day2;
 
 /**
  * The main class used to run different days.

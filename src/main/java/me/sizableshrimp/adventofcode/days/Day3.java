@@ -1,6 +1,6 @@
-package days;
+package me.sizableshrimp.adventofcode.days;
 
-import util.Day;
+import me.sizableshrimp.adventofcode.Day;
 
 public class Day3 extends Day {
     @Override
