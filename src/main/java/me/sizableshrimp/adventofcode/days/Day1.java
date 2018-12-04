@@ -12,7 +12,7 @@ public class Day1 extends Day {
 
     public Day1() {
         super();
-        for (String line : lines()) {
+        for (String line : lines) {
             freqs.add(Integer.parseInt(line));
         }
     }

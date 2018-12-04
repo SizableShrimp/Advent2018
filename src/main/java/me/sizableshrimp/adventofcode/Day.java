@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class Day {
-    private final List<String> lines = new ArrayList<>();
+    protected final List<String> lines = new ArrayList<>();
 
     public Day() {
         Class<?> cls = getClass();
@@ -26,10 +26,8 @@ public abstract class Day {
      */
     public void run() {
         long before = System.nanoTime();
-        part1();
-        part2();
-        long after = System.nanoTime();
         Pair<Object, Object> pair = doParts();
+        long after = System.nanoTime();
         System.out.println("Part 1: "+Objects.toString(pair.getKey(), ""));
         System.out.println("Part 2: "+Objects.toString(pair.getValue(), ""));
         System.out.printf("Completed in %.4fs%n%n", (after - before) / 1_000_000_000f);
@@ -57,13 +55,5 @@ public abstract class Day {
      */
     protected Object part2() {
         throw new UnsupportedOperationException();
-    }
-
-    /**
-     *
-     * @return A list of lines from the input file
-     */
-    protected List<String> lines() {
-        return lines;
     }
 }

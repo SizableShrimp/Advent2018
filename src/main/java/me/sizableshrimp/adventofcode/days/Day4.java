@@ -14,10 +14,10 @@ public class Day4 extends Day {
     private Map<Integer, int[]> guards = new HashMap<>();
     @Override
     protected Object part1() {
-        lines().sort(Comparator.comparingLong(Day4::convertFromString));
+        lines.sort(Comparator.comparingLong(Day4::convertFromString));
         int guardOnDuty = 0;
         int fallAsleepMinute = 0;
-        for (String line : lines()) {
+        for (String line : lines) {
             if (line.contains("begins shift")) {
                 guardOnDuty = Integer.parseInt(line.split(" ")[3].substring(1));
                 System.out.println("Guard #"+guardOnDuty+" begin shift");
@@ -48,7 +48,7 @@ public class Day4 extends Day {
                 totalValue += array[i];
                 if (max < array[i]) {
                     max = array[i];
-                    maxMinute = i+1; //compensate for 0-based arrays
+                    maxMinute = i;
                 }
             }
             System.out.println("Guard #"+entry.getKey()+" achieved a PERSONAL most minutes slept at "+totalValue+" with common minute "+maxMinute+" because they slept for "+max+" days during that minute");
@@ -64,7 +64,27 @@ public class Day4 extends Day {
 
     @Override
     protected Object part2() {
-        return null;
+        int globalGuardId = 0;
+        int globalHighestValue = 0;
+        int globalCommonMinute = 0;
+        for (Map.Entry<Integer, int[]> entry : guards.entrySet()) {
+            int max = 0;
+            int maxMinute = 0;
+            int[] array = entry.getValue();
+            for (int i = 0; i < array.length; i++) {
+                if (max < array[i]) {
+                    max = array[i];
+                    maxMinute = i;
+                }
+            }
+            if (globalHighestValue < max) {
+                globalGuardId = entry.getKey();
+                globalHighestValue = max;
+                globalCommonMinute = maxMinute;
+                System.out.println("Guard #"+entry.getKey()+" got GLOBAL most common minute slept for sleeping "+max+" days on minute "+maxMinute);
+            }
+        }
+        return globalGuardId * globalCommonMinute;
     }
 
     private static long convertFromString(String s) {
