@@ -36,28 +36,30 @@ public class Day4 extends Day {
                 System.out.println("Guard #"+guardOnDuty+" woke up at minute "+endMinute+" array ("+Arrays.toString(sleepMinutes)+")");
             }
         }
-        int highestGuardId = 0;
-        int highestGuardMinute = 0;
-        int highestGuardValue = 0;
+        int globalGuardId = 0;
+        int globalMostMinutesSlept = 0;
+        int globalCommonMinute = 0;
         for (Map.Entry<Integer, int[]> entry : guards.entrySet()) {
             int max = 0;
             int maxMinute = 0;
+            int totalValue = 0;
             int[] array = entry.getValue();
             for (int i = 0; i < array.length; i++) {
+                totalValue += array[i];
                 if (max < array[i]) {
                     max = array[i];
                     maxMinute = i+1; //compensate for 0-based arrays
                 }
             }
-            System.out.println("Guard #"+entry.getKey()+" achieved a PERSONAL max of "+max+" on minute "+maxMinute);
-            if (highestGuardValue < max) {
-                highestGuardId = entry.getKey();
-                highestGuardMinute = maxMinute;
-                highestGuardValue = max;
-                System.out.println("Guard #"+entry.getKey()+" got a GLOBAL max of "+max+" on minute "+maxMinute);
+            System.out.println("Guard #"+entry.getKey()+" achieved a PERSONAL most minutes slept at "+totalValue+" with common minute "+maxMinute+" because they slept for "+max+" days during that minute");
+            if (globalMostMinutesSlept < totalValue) {
+                globalGuardId = entry.getKey();
+                globalMostMinutesSlept = totalValue;
+                globalCommonMinute = maxMinute;
+                System.out.println("Guard #"+entry.getKey()+" got GLOBAL most minutes slept at "+totalValue+" with common minute "+maxMinute+" because they slept for "+max+" days during that minute");
             }
         }
-        return highestGuardId * highestGuardMinute;
+        return globalGuardId * globalCommonMinute;
     }
 
     @Override
