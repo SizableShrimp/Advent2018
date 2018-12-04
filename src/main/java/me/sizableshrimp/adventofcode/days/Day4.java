@@ -23,17 +23,17 @@ public class Day4 extends Day {
                 System.out.println("Guard #"+guardOnDuty+" begin shift");
             } else if (line.contains("falls asleep")) {
                 fallAsleepMinute = parseMinutes(line);
-                System.out.println("Guard #"+guardOnDuty+" fell asleep at minute "+(fallAsleepMinute+1));
+                System.out.println("Guard #"+guardOnDuty+" fell asleep at minute "+fallAsleepMinute);
             } else if (line.contains("wakes up")) {
                 int[] sleepMinutes = guards.getOrDefault(guardOnDuty, new int[60]);
                 int endMinute = parseMinutes(line);
                 for (int i = 0; i < sleepMinutes.length; i++) {
-                    if (i >= fallAsleepMinute && i <= endMinute) {
+                    if (i >= fallAsleepMinute && i < endMinute) {
                         sleepMinutes[i] = sleepMinutes[i]+1;
                     }
                 }
                 guards.put(guardOnDuty, sleepMinutes);
-                System.out.println("Guard #"+guardOnDuty+" woke up at minute "+(endMinute+1)+" array ("+Arrays.toString(sleepMinutes)+")");
+                System.out.println("Guard #"+guardOnDuty+" woke up at minute "+endMinute+" array ("+Arrays.toString(sleepMinutes)+")");
             }
         }
         int highestGuardId = 0;
@@ -41,23 +41,23 @@ public class Day4 extends Day {
         int highestGuardValue = 0;
         for (Map.Entry<Integer, int[]> entry : guards.entrySet()) {
             int max = 0;
-            int maxIndex = 0;
+            int maxMinute = 0;
             int[] array = entry.getValue();
             for (int i = 0; i < array.length; i++) {
                 if (max < array[i]) {
                     max = array[i];
-                    maxIndex = i;
+                    maxMinute = i+1; //compensate for 0-based arrays
                 }
             }
-            System.out.println("Guard #"+entry.getKey()+" achieved a PERSONAL max of "+max+" on minute "+(maxIndex+1));
+            System.out.println("Guard #"+entry.getKey()+" achieved a PERSONAL max of "+max+" on minute "+maxMinute);
             if (highestGuardValue < max) {
                 highestGuardId = entry.getKey();
-                highestGuardMinute = maxIndex;
+                highestGuardMinute = maxMinute;
                 highestGuardValue = max;
-                System.out.println("Guard #"+entry.getKey()+" got a GLOBAL max of "+max+" on minute "+(maxIndex+1));
+                System.out.println("Guard #"+entry.getKey()+" got a GLOBAL max of "+max+" on minute "+maxMinute);
             }
         }
-        return highestGuardId * (highestGuardMinute+1);
+        return highestGuardId * highestGuardMinute;
     }
 
     @Override
