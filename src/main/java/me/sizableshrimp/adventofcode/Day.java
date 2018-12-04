@@ -5,6 +5,7 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class Day {
@@ -29,8 +30,8 @@ public abstract class Day {
         part2();
         long after = System.nanoTime();
         Pair<Object, Object> pair = doParts();
-        System.out.println("Part 1: "+pair.getKey().toString());
-        System.out.println("Part 2: "+pair.getValue().toString());
+        System.out.println("Part 1: "+Objects.toString(pair.getKey(), ""));
+        System.out.println("Part 2: "+Objects.toString(pair.getValue(), ""));
         System.out.printf("Completed in %.4fs%n%n", (after - before) / 1_000_000_000f);
     }
 
