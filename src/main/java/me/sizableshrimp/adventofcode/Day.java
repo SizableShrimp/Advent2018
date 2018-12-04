@@ -13,7 +13,7 @@ public abstract class Day {
 
     public Day() {
         Class<?> cls = getClass();
-        String filename = cls.getSimpleName().toLowerCase(Locale.ROOT) + "-input";
+        String filename = cls.getSimpleName().toLowerCase(Locale.ROOT);
         try (Scanner scan = new Scanner(cls.getResourceAsStream("/" + filename + ".txt"))) {
             while (scan.hasNextLine()) {
                 lines.add(scan.nextLine());
