@@ -1,6 +1,5 @@
 package me.sizableshrimp.adventofcode.days;
 
-import javafx.util.Pair;
 import lombok.AllArgsConstructor;
 import me.sizableshrimp.adventofcode.Day;
 
@@ -21,7 +20,7 @@ public class Day9 extends Day {
     private List<Integer> marbles = new LinkedList<>();
 
     @Override
-    protected Pair<Object, Object> doParts() {
+    protected Result doParts() {
         final int marbleAmount = parse();
         marbles.add(0);
         int currentPlayer = 0;
@@ -55,7 +54,7 @@ public class Day9 extends Day {
                         .max().getAsLong();
             }
         }
-        return new Pair<>(part1, players
+        return new Result(part1, players
         .stream()
         .mapToLong(p -> p.score)
         .max().getAsLong());

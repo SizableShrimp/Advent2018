@@ -1,6 +1,7 @@
 package me.sizableshrimp.adventofcode;
 
-import javafx.util.Pair;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,17 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class Day {
+    @NoArgsConstructor
+    protected static class Result {
+        @Getter
+        String part1, part2;
+
+        public Result(Object part1, Object part2) {
+            this.part1 = Objects.toString(part1, "");
+            this.part2 = Objects.toString(part2, "");
+        }
+    }
+
     protected final List<String> lines = new ArrayList<>();
 
     public Day() {
@@ -30,28 +42,28 @@ public abstract class Day {
     }
 
     /**
-     * Used to run the day's code when the two parts are separate
+     * Execute both parts of a given day's code
      */
     public void run() {
         long before = System.nanoTime();
-        Pair<Object, Object> pair = doParts();
+        Result result = doParts();
         long after = System.nanoTime();
-        System.out.println("Part 1: "+Objects.toString(pair.getKey(), ""));
-        System.out.println("Part 2: "+Objects.toString(pair.getValue(), ""));
+        System.out.println("Part 1: "+result.getPart1());
+        System.out.println("Part 2: "+result.getPart2());
         System.out.printf("Completed in %.4fs%n%n", (after - before) / 1_000_000_000f);
     }
 
     /**
      * This method can be overridden to combine the logic of both parts if needed.
-     * @return A pair of Part 1 and 2
+     * @return A result of both part 1 and 2
      */
-    protected Pair<Object, Object> doParts() {
-        return new Pair<>(part1(), part2());
+    protected Result doParts() {
+        return new Result(part1(), part2());
     }
 
     /**
      *
-     * @return The result of Part 1
+     * @return The result of part 1
      */
     protected Object part1() {
         throw new UnsupportedOperationException();
@@ -59,13 +71,9 @@ public abstract class Day {
 
     /**
      *
-     * @return The result of Part 2
+     * @return The result of part 2
      */
     protected Object part2() {
         throw new UnsupportedOperationException();
-    }
-
-    public List<String> getLines() {
-        return new ArrayList<>(lines);
     }
 }
