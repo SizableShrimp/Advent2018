@@ -38,7 +38,6 @@ public class Day1 extends Day {
                     return freq;
                 }
                 output.add(freq);
-                //System.out.println("Used "+freq);
             }
         }
     }

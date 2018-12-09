@@ -10,7 +10,12 @@ import java.util.stream.Collectors;
 public class Day2 extends Day {
     @Override
     protected Object part1() {
-        return lines.stream().filter(str -> hasLetterCount(str, 2)).count() * lines.stream().filter(str -> hasLetterCount(str, 3)).count();
+        return lines
+                .stream()
+                .filter(str -> hasLetterCount(str, 2)).count() *
+                lines
+                        .stream()
+                        .filter(str -> hasLetterCount(str, 3)).count();
     }
 
     @Override
@@ -20,14 +25,19 @@ public class Day2 extends Day {
             for (int j = i+1; j < lines.size(); j++) {
                 String other = lines.get(j);
                 int index = getDifference(current, other);
-                if (index != -1) return deleteCharAt(current, index);
+                if (index != -1) {
+                    return new StringBuilder(current).deleteCharAt(index).toString();
+                }
             }
         }
         return null;
     }
 
     private static boolean hasLetterCount(String str, int count) {
-        return str.chars().boxed().collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).values().contains((long) count);
+        return str
+                .chars().boxed()
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .values().contains((long) count); //not my solution; credit goes to http://github.com/tterrag1098/Advent2018/
     }
 
     private static int getDifference(String a, String b) {
@@ -39,11 +49,5 @@ public class Day2 extends Day {
             if (aArray[i] != bArray[i]) indices.add(i);
         }
         return indices.size() == 1 ? indices.get(0) : -1;
-    }
-
-    private static String deleteCharAt(String a, int index) {
-        StringBuilder builder = new StringBuilder(a);
-        builder.deleteCharAt(index);
-        return builder.toString();
     }
 }

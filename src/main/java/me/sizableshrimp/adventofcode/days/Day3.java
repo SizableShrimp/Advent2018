@@ -4,49 +4,45 @@ import me.sizableshrimp.adventofcode.Day;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Day3 extends Day {
     private int[][] claims = new int[1000][1000];
-    private Map<Integer, Integer> sizes = new HashMap<>(); //a map to keep track of the size for each id; for checking the one non-overlapping claim
+    private Map<Integer, Integer> sizes = new HashMap<>(); //claim id, claim size
     private int overlapAmount = 0;
 
     @Override
     protected Object part1() {
-        for (String line : lines) {
-            int id = getId(line);
-            sizes.put(id, addClaim(id, getLeftEdge(line), getTopEdge(line), getWidth(line), getLength(line)));
-        }
-//        for (int[] innerArray : claims) {
-//            if (Arrays.stream(innerArray).filter(i -> i != 0).sum() == 0) continue;
-//            System.out.println(Arrays.toString(innerArray));
-//        }
+        lines.forEach(this::addClaim);
         return overlapAmount;
     }
 
     @Override
     protected Object part2() {
         Map<Integer, Integer> realSizes = new HashMap<>();
-        for (int x = 0; x < claims.length; x++) {
-            for (int y = 0; y < claims[x].length; y++) {
-                if (claims[x][y] > 0) realSizes.put(claims[x][y], realSizes.getOrDefault(claims[x][y], 0)+1);
+        for (int[] claim : claims) {
+            for (int i : claim) {
+                if (i > 0) realSizes.merge(i, 1, Integer::sum);
             }
         }
-        for (Integer id : sizes.keySet()) {
-            Integer size = sizes.get(id);
-            Integer realSize = realSizes.getOrDefault(id, 0);
-            if (realSize.equals(size)) return id;
+        for (Map.Entry<Integer, Integer> entry : sizes.entrySet()) {
+            Integer size = entry.getValue();
+            Integer realSize = realSizes.getOrDefault(entry.getKey(), 0);
+            if (realSize.equals(size)) return entry.getKey();
         }
         return null;
     }
 
-    /**
-     * @param length The length of the claim (y-axis)
-     * @param width The width of the claim (x-axis)
-     * @param leftEdge The number of spaces away from the left edge (starting x = leftEdge+1)
-     * @param topEdge The number of spaces away from the top edge (starting y = topEdge+1)
-     * @return Returns the projected size of the claim
-     */
-    private int addClaim(int id, int leftEdge, int topEdge, int width, int length) {
+    private void addClaim(String line) {
+        Pattern pattern = Pattern.compile("#(\\d+)\\s@\\s(\\d+),(\\d+):\\s(\\d+)x(\\d+)");
+        Matcher match = pattern.matcher(line);
+        if (!match.matches()) return;
+        int id = Integer.parseInt(match.group(1));
+        int leftEdge = Integer.parseInt(match.group(2));
+        int topEdge = Integer.parseInt(match.group(3));
+        int width = Integer.parseInt(match.group(4));
+        int length = Integer.parseInt(match.group(5));
         int size = 0;
         for (int x = leftEdge; x < leftEdge+width && x < claims.length; x++) {
             for (int y = topEdge; y < topEdge+length && y < claims[x].length; y++) {
@@ -54,34 +50,12 @@ public class Day3 extends Day {
                 if (claims[x][y] == -1) continue;
                 if (claims[x][y] > 0) {
                     overlapAmount++;
-                    //System.out.println(x+", "+y+" has overlapped. New overlap amount is "+overlapAmount);
                     claims[x][y] = -1;
                     continue;
                 }
-                if (claims[x][y] == 0) claims[x][y] = id;
+                claims[x][y] = id;
             }
         }
-        return size;
-    }
-
-    private int getId(String claim) {
-        return Integer.parseInt(claim.split(" ")[0].substring(1));
-    }
-
-    private int getLeftEdge(String claim) {
-        return Integer.parseInt(claim.split(" ")[2].split(",")[0]);
-    }
-
-    private int getTopEdge(String claim) {
-        String s = claim.split(" ")[2].split(",")[1];
-        return Integer.parseInt(s.substring(0, s.length()-1)); //exclude the ":"
-    }
-
-    private int getWidth(String claim) {
-        return Integer.parseInt(claim.split(" ")[3].split("x")[0]);
-    }
-
-    private int getLength(String claim) {
-        return Integer.parseInt(claim.split(" ")[3].split("x")[1]);
+        sizes.put(id, size);
     }
 }
