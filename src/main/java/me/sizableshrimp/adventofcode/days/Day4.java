@@ -51,66 +51,13 @@ public class Day4 extends Day {
                 biggestMinuteSleeper = entry.getKey();
                 mostDaysSlept = max;
                 mostDaysSleptMinute = maxMinute;
-                System.out.println("Guard #"+entry.getKey()+" got GLOBAL most common minute slept for sleeping "+max+" days on minute "+maxMinute);
+                //System.out.println("Guard #"+entry.getKey()+" got GLOBAL most common minute slept for sleeping "+max+" days on minute "+maxMinute);
             }
         }
         int part1 = highestSleeper * commonMinute;
         int part2 = biggestMinuteSleeper * mostDaysSleptMinute;
         return new Result(part1, part2);
     }
-
-//    @Override
-//    protected Object part1() {
-//        int highestSleeper = 0; //the guard ID of the highest sleeper (most minutes slept in total)
-//        int mostMinutesSlept = 0; //the most minutes slept
-//        int commonMinute = 0; //the minute in which the guard was most commonly asleep
-//
-//        for (Map.Entry<Integer, int[]> entry : guards.entrySet()) {
-//            int max = 0; //the maximum days slept in a given minute
-//            int maxMinute = 0; //the given minute
-//            int totalValue = 0; //the total amount of minutes slept
-//            int[] array = entry.getValue();
-//            for (int i = 0; i < array.length; i++) {
-//                totalValue += array[i];
-//                if (max < array[i]) {
-//                    max = array[i];
-//                    maxMinute = i;
-//                }
-//            }
-//            if (mostMinutesSlept < totalValue) {
-//                highestSleeper = entry.getKey();
-//                mostMinutesSlept = totalValue;
-//                commonMinute = maxMinute;
-//                //System.out.println("Guard #"+entry.getKey()+" got GLOBAL most minutes slept at "+totalValue+" with common minute "+maxMinute);
-//            }
-//        }
-//        return highestSleeper * commonMinute;
-//    }
-//
-//    @Override
-//    protected Object part2() {
-//        int biggestMinuteSleeper = 0; //the guard ID who slept the most days in a given minute
-//        int mostDaysSlept = 0; //the most days slept in a given minute
-//        int mostDaysSleptMinute = 0; //the given minute
-//        for (Map.Entry<Integer, int[]> entry : guards.entrySet()) {
-//            int max = 0; //the maximum days a guard slept in a given minute
-//            int maxMinute = 0; //the given minute
-//            int[] array = entry.getValue();
-//            for (int i = 0; i < array.length; i++) {
-//                if (max < array[i]) {
-//                    max = array[i];
-//                    maxMinute = i;
-//                }
-//            }
-//            if (mostDaysSlept < max) {
-//                biggestMinuteSleeper = entry.getKey();
-//                mostDaysSlept = max;
-//                mostDaysSleptMinute = maxMinute;
-//                System.out.println("Guard #"+entry.getKey()+" got GLOBAL most common minute slept for sleeping "+max+" days on minute "+maxMinute);
-//            }
-//        }
-//        return biggestMinuteSleeper * mostDaysSleptMinute;
-//    }
 
     /**
      * Parses the date in an input line
@@ -129,7 +76,7 @@ public class Day4 extends Day {
     }
 
     /**
-     * Parses the input into the map of guards
+     * Parses the input into the map of guards to sleep times
      */
     private void parse() {
         lines.sort(Comparator.comparingLong(Day4::parseMillis));

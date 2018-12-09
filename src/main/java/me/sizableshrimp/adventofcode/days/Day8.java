@@ -39,13 +39,11 @@ public class Day8 extends Day {
                     .sum();
         }
 
-        List<Node> getAllNodes() {
+        Set<Node> getAllNodes() {
             Set<Node> nodes = new HashSet<>();
             nodes.add(this);
-            for (Node n : childNodes) {
-                nodes.addAll(n.getAllNodes());
-            }
-            return new ArrayList<>(nodes);
+            childNodes.forEach(n -> nodes.addAll(n.getAllNodes()));
+            return nodes;
         }
     }
 

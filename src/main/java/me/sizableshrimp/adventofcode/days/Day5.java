@@ -21,7 +21,7 @@ public class Day5 extends Day {
         for (char c : chars) {
             if (used.contains(c)) continue;
             used.add(c);
-            String removed = react(chemical.replaceAll(String.valueOf(c), "").replaceAll(String.valueOf(c).toUpperCase(), ""));
+            String removed = react(chemical.replace(String.valueOf(c), "").replace(String.valueOf(c).toUpperCase(), ""));
             if (removed.length() < shortestLength || shortestLength == -1) shortestLength = removed.length();
         }
         return shortestLength;

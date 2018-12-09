@@ -1,9 +1,9 @@
 package me.sizableshrimp.adventofcode.days;
 
-import lombok.AllArgsConstructor;
 import me.sizableshrimp.adventofcode.Day;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -11,12 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day9 extends Day {
-    @AllArgsConstructor
-    private class Player {
-        long score;
-    }
-
-    private List<Player> players = new ArrayList<>();
+    private List<Long> players = new ArrayList<>();
     private List<Integer> marbles = new LinkedList<>();
 
     @Override
@@ -27,18 +22,18 @@ public class Day9 extends Day {
         long part1 = 0;
         ListIterator<Integer> iterator = marbles.listIterator();
         for (int i = 1; i <= 100 * marbleAmount; i++) {
-            currentPlayer++;
-            if (currentPlayer >= players.size()) currentPlayer = 0;
+            if (++currentPlayer >= players.size()) currentPlayer = 0;
             //System.out.println(marbles);
             if (i % 23 == 0) {
-                Player player = players.get(currentPlayer);
-                player.score += i;
+                long score = players.get(currentPlayer);
+                score += i;
                 int num = 0;
                 for (int j = 0; j <= 7; j++) {
                     if (!iterator.hasPrevious()) iterator = marbles.listIterator(marbles.size());
                     num = iterator.previous();
                 }
-                player.score += num;
+                score += num;
+                players.set(currentPlayer, score);
                 iterator.remove();
                 if (!iterator.hasNext()) iterator = marbles.listIterator();
                 iterator.next();
@@ -50,14 +45,13 @@ public class Day9 extends Day {
             if (i == marbleAmount) {
                 part1 = players
                         .stream()
-                        .mapToLong(p -> p.score)
-                        .max().getAsLong();
+                        .max(Comparator.naturalOrder()).get();
             }
         }
-        return new Result(part1, players
-        .stream()
-        .mapToLong(p -> p.score)
-        .max().getAsLong());
+        long part2 = players
+                .stream()
+                .max(Comparator.naturalOrder()).get();
+        return new Result(part1, part2);
     }
 
     private int parse() {
@@ -66,7 +60,7 @@ public class Day9 extends Day {
         matcher.matches();
         int playerAmount = Integer.parseInt(matcher.group(1));
         for (int i = 1; i <= playerAmount; i++) {
-            players.add(new Player(0));
+            players.add(0L);
         }
         return Integer.parseInt(matcher.group(2)) + 1;
     }

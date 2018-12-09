@@ -35,7 +35,7 @@ public class Day3 extends Day {
     }
 
     private void addClaim(String line) {
-        Pattern pattern = Pattern.compile("#(\\d+)\\s@\\s(\\d+),(\\d+):\\s(\\d+)x(\\d+)");
+        Pattern pattern = Pattern.compile("#(\\d+) @ (\\d+),(\\d+): (\\d+)x(\\d+)");
         Matcher match = pattern.matcher(line);
         if (!match.matches()) return;
         int id = Integer.parseInt(match.group(1));
