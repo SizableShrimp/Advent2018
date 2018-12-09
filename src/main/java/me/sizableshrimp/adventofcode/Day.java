@@ -12,9 +12,17 @@ public abstract class Day {
     protected final List<String> lines = new ArrayList<>();
 
     public Day() {
-        Class<?> cls = getClass();
-        String filename = cls.getSimpleName().toLowerCase(Locale.ROOT);
-        try (Scanner scan = new Scanner(cls.getResourceAsStream("/" + filename + ".txt"))) {
+        Class<?> clazz = getClass();
+        String filename = clazz.getSimpleName().toLowerCase(Locale.ROOT) + ".txt";
+        try (Scanner scan = new Scanner(clazz.getResourceAsStream("/" + filename))) {
+            while (scan.hasNextLine()) {
+                lines.add(scan.nextLine());
+            }
+        }
+    }
+
+    public Day(String filename) {
+        try (Scanner scan = new Scanner(getClass().getResourceAsStream("/" + filename))) {
             while (scan.hasNextLine()) {
                 lines.add(scan.nextLine());
             }
@@ -55,5 +63,9 @@ public abstract class Day {
      */
     protected Object part2() {
         throw new UnsupportedOperationException();
+    }
+
+    public List<String> getLines() {
+        return new ArrayList<>(lines);
     }
 }
