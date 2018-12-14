@@ -7,14 +7,6 @@ public class Day11 extends Day {
     private static final int SERIAL_NUMBER = 1308;
     private static final int SIZE = 300;
 
-    public Day11() {
-        //don't need input file
-    }
-
-    public static void main(String[] args) {
-        new Day11().run();
-    }
-
     @Override
     protected Object part1() {
         int maxPower = -1;
