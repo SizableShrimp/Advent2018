@@ -3,6 +3,7 @@ package me.sizableshrimp.adventofcode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -26,7 +27,9 @@ public abstract class Day {
     public Day() {
         Class<?> clazz = getClass();
         String filename = clazz.getSimpleName().toLowerCase(Locale.ROOT) + ".txt";
-        try (Scanner scan = new Scanner(clazz.getResourceAsStream("/" + filename))) {
+        InputStream stream = clazz.getResourceAsStream("/" + filename);
+        if (stream == null) return;
+        try (Scanner scan = new Scanner(stream)) {
             while (scan.hasNextLine()) {
                 lines.add(scan.nextLine());
             }
@@ -34,7 +37,9 @@ public abstract class Day {
     }
 
     public Day(String filename) {
-        try (Scanner scan = new Scanner(getClass().getResourceAsStream("/" + filename))) {
+        InputStream stream = getClass().getResourceAsStream("/" + filename);
+        if (stream == null) return;
+        try (Scanner scan = new Scanner(stream)) {
             while (scan.hasNextLine()) {
                 lines.add(scan.nextLine());
             }
@@ -66,7 +71,7 @@ public abstract class Day {
      * @return The result of part 1
      */
     protected Object part1() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 
     /**
@@ -74,6 +79,6 @@ public abstract class Day {
      * @return The result of part 2
      */
     protected Object part2() {
-        throw new UnsupportedOperationException();
+        return null;
     }
 }
