@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import me.sizableshrimp.adventofcode.Day;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -16,24 +14,20 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Day13 extends Day {
     @AllArgsConstructor
     @EqualsAndHashCode
-    @ToString
     private class Coordinate {
         int x, y;
 
-        private Coordinate up() {
-            return new Coordinate(x, y - 1); //0-based from top left
-        }
-
-        private Coordinate down() {
-            return new Coordinate(x, y + 1); //0-based from top left
-        }
-
-        private Coordinate left() {
-            return new Coordinate(x - 1, y);
-        }
-
-        private Coordinate right() {
-            return new Coordinate(x + 1, y);
+        private Coordinate direction(Direction direction) {
+            if (direction == Direction.UP) {
+                return new Coordinate(x, y - 1); //0-based from top left
+            } else if (direction == Direction.DOWN) {
+                return new Coordinate(x, y + 1); //0-based from top left
+            } else if (direction == Direction.LEFT) {
+                return new Coordinate(x - 1, y);
+            } else if (direction == Direction.RIGHT) {
+                return new Coordinate(x + 1, y);
+            }
+            return null;
         }
     }
 
@@ -41,8 +35,6 @@ public class Day13 extends Day {
         BACKSLASH, FORWARDSLASH, VERTICAL, HORIZONTAL, INTERSECTION
     }
 
-    @ToString
-    @EqualsAndHashCode
     private class Cart {
         @Getter
         @Setter
@@ -67,16 +59,7 @@ public class Day13 extends Day {
         }
 
         private Coordinate getNextCoordinate() {
-            if (direction == Direction.UP) {
-                return coordinate.up();
-            } else if (direction == Direction.DOWN) {
-                return coordinate.down();
-            } else if (direction == Direction.LEFT) {
-                return coordinate.left();
-            } else if (direction == Direction.RIGHT) {
-                return coordinate.right();
-            }
-            return coordinate;
+            return coordinate.direction(direction);
         }
 
         private int getX() {
@@ -92,10 +75,9 @@ public class Day13 extends Day {
         UP, RIGHT, DOWN, LEFT;
 
         private Direction getDirectionOffset(int rightOffset) {
-            List<Direction> directions = Arrays.asList(Direction.values());
-            int index = directions.indexOf(this);
-            int resultIndex = (index + rightOffset) % directions.size();
-            return directions.get(resultIndex);
+            Direction[] values = values();
+            int index = (ordinal() + rightOffset) % values.length;
+            return values[index];
         }
 
         private Direction rightTurn() {
@@ -132,9 +114,6 @@ public class Day13 extends Day {
             return null;
         }
     }
-
-
-
 
     private Track[][] tracks;
     private List<Cart> carts = new CopyOnWriteArrayList<>();
@@ -179,7 +158,6 @@ public class Day13 extends Day {
 
     private Coordinate moveCarts(boolean returnCrash) {
         carts.sort(Comparator.comparing(Cart::getX).thenComparing(Cart::getY));
-        Coordinate result = null;
         for (Cart cart : carts) {
             Track track = tracks[cart.getX()][cart.getY()];
             if (track == null) continue;
@@ -198,9 +176,9 @@ public class Day13 extends Day {
                     crash = moveCart(cart, direction);
                 }
             }
-            if (returnCrash && crash != null) result = crash;
+            if (returnCrash && crash != null) return crash;
         }
-        return result;
+        return null;
     }
 
     private Coordinate moveCart(Cart cart, Direction direction) {
